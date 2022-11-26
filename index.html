@@ -69,24 +69,32 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id = "consoleLog">Console Log</button>
+      <button id = "consoleError">Console Error</button>
+      <button id = "consoleCount">Console Count</button>
+      <button id = "consoleWarn">Console Warn</button>
+      <button id = "consoleAssert">Console Assert</button>
+      <button id = "consoleClear">Console Clear</button>
+      <button id = "consoleDir">Console Dir</button>
+      <button id = "consoleDirxml">Console dirxml</button>
+      <button id = "consoleGroupStart">Console Group Start</button>
+      <button id = "consoleGroupEnd">Console Group End</button>
+      <button id = "consoleTable">Console Table</button>
+      <button id = "startTimer">Start Timer</button>
+      <button id = "endTimer">End Timer</button>
+      <button id = "consoleTrace">Console Trace</button>
+      <button id = "triggerGlobalError">Trigger a Global Error</button>
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "9f7683bcafd54bc5996f537492fa5fdd"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+  
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -102,6 +110,122 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let counter = 0;
+    // Console Log
+    errorBtns[0].addEventListener('click', event => {
+      console.log('Console Log Demo');
+    });
+
+    // Console Error
+    errorBtns[1].addEventListener('click', event => {
+      console.error('Console Error Demo');
+    });
+
+    // Console Count
+    errorBtns[2].addEventListener('click', event => {
+      counter++;
+      console.log('Count Button: ' + counter);
+    });
+
+    // Console Warn
+    errorBtns[3].addEventListener('click', event => {
+      console.warn('Console Warn Button');
+    });
+
+    // Console Assert
+    errorBtns[4].addEventListener('click', event => {
+      let num = 0;
+      const message = "Num is not equal to 1";
+      console.assert(num === 1, { num, message });
+    });
+
+    // Console Clear
+    errorBtns[5].addEventListener('click', event => {
+      console.clear();
+    });
+
+    // Console Dir
+    errorBtns[6].addEventListener('click', event => {
+      console.dir(errorBtns[6]);
+    });
+
+    // Console Dirxml
+    errorBtns[7].addEventListener('click', event => {
+      console.dirxml(errorBtns[7]);
+    });
+
+    // Console Group Start
+    errorBtns[8].addEventListener('click', event => {
+      console.group();
+    });
+    
+    // Console Group End
+    errorBtns[9].addEventListener('click', event => {
+      console.groupEnd();
+    });
+
+    // Console Table
+    errorBtns[10].addEventListener('click', event => {
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+      console.table([new Person('Shasta', 20), new Person('Tanay', 18), new Person('Nirmal', 21), new Person('Obama', 61)]);
+    });
+
+    // Start Timer
+    errorBtns[11].addEventListener('click', event => {
+      console.time('Timer Demo');
+    });
+
+    // End Timer
+    errorBtns[12].addEventListener('click', event => {
+      console.timeEnd('Timer Demo');
+    });
+
+    // Console Trace
+    errorBtns[13].addEventListener('click', event => {
+      function deep() {
+        function deeper() {
+          function deepest(){
+            console.trace();
+          }
+          deepest();
+        }
+        deeper();
+      }
+      deep();
+    });
+
+    // Trigger Global Error
+    errorBtns[14].addEventListener('click', event => {
+      class specialError extends Error{
+        constructor(note){
+          super(note);
+          this.name = "Special Error Note";
+        }
+      }
+      try {
+        // run
+        throw new specialError('custom error input');
+        let checkBox = document.querySelector('#special-checkbox');
+        checkBox.innerHTML = '';
+      } catch (err) {
+        // handle errors
+        console.log("Caught error: " + err);
+      } finally {
+        // executed regardless of try result
+        console.log("We don't care about errors though lol");
+        throw new specialError('custom error input');
+      }
+    });
+
+    window.onerror = function(errorMessage, url, lineNumber) {
+      console.log('Global Error!!!');
+        console.log('Message: ' + errorMessage);
+        console.log('Line Number: ' + lineNumber);
+    }
+
   </script>
 </body>
 
